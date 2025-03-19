@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtue Prompts</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Load data.js first to ensure it's available before script.js runs -->
+    <script src="data.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Problem Page -->
+        <div id="problem-page">
+            <h1>What are you going through?</h1>
+            <div id="button-container">
+                <button id="toggle-casual" class="btn">More Casual</button>
+                <button id="refresh-btn" class="btn square-btn" title="Refresh problems">↻</button>
+            </div>
+            <div id="problems-grid" class="grid">
+                <!-- Debug element to show if grid is empty -->
+                <div id="loading-message" style="grid-column: span 2; text-align: center; padding: 20px;">
+                    Loading problems...
+                </div>
+            </div>
+            <div id="button-row">
+                <button id="done-btn" class="btn">Done</button>
+            </div>
+        </div>
+
+        <!-- Dice Page -->
+        <div id="dice-page" style="display: none;">
+            <h1 id="top-virtues">These virtues might help:</h1>
+            <div id="virtue-list-container"></div>
+            <div id="dice-container">
+                <div id="dice"></div>
+            </div>
+            <button id="roll-btn" class="btn">Roll</button>
+            <div id="result-container">
+                <h2 id="selected-virtue"></h2>
+                <p id="selected-prompt"></p>
+            </div>
+            <div id="dice-buttons">
+                <button id="back-btn" class="btn square-btn" title="Back to problems">←</button>
+                <button id="help-btn" class="btn square-btn" title="Help">?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Added a small script for direct debugging in the HTML -->
+    <script>
+        // This will output any errors with data.js loading
+        window.addEventListener('error', function(event) {
+            console.error('Script error detected:', event.error);
+            document.getElementById('problems-grid').innerHTML = 
+                `<div style="color: red; padding: 20px;">Error loading script: ${event.filename}</div>`;
+        });
+        
+        // Check if data object exists after data.js should be loaded
+        console.log('Data object available in HTML?', typeof data !== 'undefined');
+    </script>
+    
+    <!-- Load script.js after data.js and error handling -->
+    <script src="script.js"></script>
+</body>
+</html>
