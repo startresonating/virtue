@@ -24,11 +24,11 @@ const data = {
     "honesty": [
       "Own up to a mistake, big or small. A simple 'I was wrong' can be powerful.",
       "If asked something you don't know, say, 'I'm not sure, but I can find out.'",
-      "Reflect on a potential blind spot. What part of life do you tend to avoid thinking about?",
+      "Reflect on a potential blind spot. What do you tend to avoid thinking about?",
       "Don't tell yourself you're not ok if you're not ok."
     ],
     "authenticity": [
-      "Share a true opinion with someone you trust today, even if it's a little uncomfortable.",
+      "Share an opinion with someone you trust today, even if it's a little uncomfortable.",
       "Tell someone one thing you genuinely appreciate about them.",
       "Do something that makes you truly happy, even if you think it's weird.",
       "It's okay if being yourself feels hard. It's still worth it."
@@ -43,7 +43,6 @@ const data = {
     "humility": [
       "Ask for help with one specific task, even if it's small.",
       "Approach a conversation with the mindset, 'I have something to learn here.'",
-      "Instead of offering advice, ask 'What do you think is the best approach?'",
       "Consider an opinion you have and ask yourself 'What if I'm wrong?'",
       "It's okay to feel proud of your accomplishments. Acknowledge someone who helped you."
     ],
@@ -61,10 +60,10 @@ const data = {
       "Offer help before being asked. Look for opportunities.",
       "Celebrate someone else's win as if it were your own.",
       "Catch yourself gossiping? Turn it around with a genuine compliment to or about someone.",
-      "Recognize a situation where you were hard on yourself, and consider how you would advise a friend in the same situation."
+      "Recognize when you have been hard on yourself, and consider how you'd advise a friend in the same situation."
     ],
     "perspective": [
-      "During a conversation, ask a clarifying question like 'What do you mean by that?' or 'Can you tell me more about that?'",
+      "During a conversation, ask a clarifying question like 'What do you mean by that?'",
       "Before reacting to an opinion you disagree with, try saying, 'Help me understand your perspective.'",
       "Consider a problem from the viewpoint of someone you respect, even if you disagree with them.",
       "Spend 5 minutes reading or listening to a viewpoint opposite to your own.",
@@ -88,7 +87,7 @@ const data = {
     "presence": [
       "Set a 'presence alarm' on your phone. When it rings, stop and notice: What do you see, hear, smell, feel?",
       "Eat one meal or snack without any distractions. Focus on the taste and texture.",
-      "Spend 5 minutes watching a natural element like the sky, a tree, or water without thinking about anything else.",
+      "Spend 5 minutes watching a natural element like the sky or a tree without thinking about anything else.",
       "Walk slowly for a few minutes, feeling each step. Notice the ground beneath you.",
       "It's okay to feel like slowing down. Settle into one nice moment."
     ],

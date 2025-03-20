@@ -61,15 +61,6 @@ function renderProblemsFallback() {
         problemElement.style.border = '2px solid #666';
         
         problemElement.onclick = function() {
-            // Remove selected state from all problem items if clicking on a different one
-            if (!this.classList.contains('selected')) {
-                document.querySelectorAll('.problem-item').forEach(item => {
-                    if (item !== this && item.classList.contains('selected')) {
-                        item.classList.remove('selected');
-                    }
-                });
-            }
-            
             this.classList.toggle('selected');
             
             if (this.classList.contains('selected')) {
@@ -153,16 +144,18 @@ function refreshProblems() {
     
     // Get all available problems except those currently displayed
     const allProblems = Object.keys(data.problems);
-    const availableProblems = allProblems.filter(key => !currentProblemKeys.includes(key));
+    let availableProblems = allProblems.filter(key => !currentProblemKeys.includes(key));
     
     // Determine if we're on mobile and should show fewer problems
     const isMobile = window.innerWidth <= 600;
     const numberOfProblems = isMobile ? 8 : 16;
     
-    // If we don't have enough remaining problems, just reinitialize
+    // If we don't have enough remaining problems, mix in some current ones
     if (availableProblems.length < numberOfProblems) {
-        initProblemPage();
-        return;
+        // Mix in some of the current problems if needed
+        const neededExtraProblems = numberOfProblems - availableProblems.length;
+        const mixedInProblems = getRandomItems(currentProblemKeys, neededExtraProblems);
+        availableProblems = [...availableProblems, ...mixedInProblems];
     }
     
     // Select random problems from the available ones
@@ -195,16 +188,7 @@ function getRandomItems(array, count) {
 
 // Toggle selection of a problem
 function toggleProblemSelection(element, problemKey) {
-    // Remove selected state from all problem items if clicking on a different one
-    if (!element.classList.contains('selected')) {
-        document.querySelectorAll('.problem-item').forEach(item => {
-            if (item !== element && item.classList.contains('selected')) {
-                // Only remove the class, don't modify the selectedProblems array yet
-                item.classList.remove('selected');
-            }
-        });
-    }
-    
+    // Toggle the selection state
     element.classList.toggle('selected');
     
     // Update the selectedProblems array
@@ -402,10 +386,11 @@ function getDynamicHeaderText(count) {
         
         // Special case for milestone 37
         if (closestMilestone === 37 && selectedProblems.length > 0) {
+            // Randomly select one of the problems the user has chosen
             const randomProblemKey = selectedProblems[Math.floor(Math.random() * selectedProblems.length)];
             const problem = data.problems[randomProblemKey];
             const formalProblemText = problem.problem.split(' / ')[0];
-            currentMilestoneMessage = `For someone that struggles with '${formalProblemText}', you sure are picky aren't you?`;
+            currentMilestoneMessage = `For someone that struggles with ${formalProblemText}, you sure are picky aren't you?`;
         } else {
             // Get messages for this milestone
             const messages = milestones[closestMilestone];
