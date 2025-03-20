@@ -335,107 +335,108 @@ h1 {
 
 /* Mobile-Friendly Media Queries */
 @media screen and (max-width: 600px) {
-    /* Adapt to screen height better */
+    /* Base layout improvements */
+    body, html {
+        height: auto;
+        overflow-x: hidden;
+    }
+    
     body {
-        min-height: 100vh; /* Full viewport height */
-        padding: 6px; /* Added some padding */
-        position: relative; /* For absolute positioning */
-        padding-bottom: 60px; /* Space for the fixed buttons */
+        padding: 0;
+        margin: 0;
+        min-height: 100%;
+        position: relative;
     }
     
     /* Change grid from 4×4 to 2×4 for mobile */
     .grid {
         grid-template-columns: repeat(2, 1fr);
         min-height: auto;
-        margin-bottom: 15px; /* Reduced */
+        margin-bottom: 15px;
     }
     
-    /* Remove container styling for mobile but add some margin */
     .container {
         background-color: transparent;
         box-shadow: none;
-        padding: 6px; /* Increased from 5px to 6px */
-        margin: 6px; /* Added margin */
-        min-height: calc(100vh - 24px); /* Full viewport height minus padding */
-        max-width: 100%;
+        padding: 10px;
+        margin: 0;
+        height: auto;
+        min-height: unset !important;
+        max-height: unset;
         position: relative;
-        display: flex;
-        flex-direction: column;
     }
     
-    /* Maintain proper page visibility */
-    #problem-page, #dice-page {
-        /* Don't override the display property that controls visibility */
+    /* Problem page adjustments */
+    #problem-page {
+        padding-bottom: 70px;
     }
     
-    /* Only apply flex layout when page is visible */
+    #problems-grid {
+        margin-bottom: 70px;
+    }
+    
+    /* Make problem items adjust better to smaller screens */
+    .problem-item {
+        min-height: 58px;
+        font-size: 14px;
+        padding: 4px 3px;
+    }
+    
+    /* Dice page - fixed height container approach */
     #dice-page[style*="display: block"] {
         display: flex !important;
         flex-direction: column;
-        min-height: calc(100vh - 24px);
+        height: 100% !important;
+        min-height: 100% !important;
+        max-height: 100vh !important;
         position: relative;
+        overflow: hidden; /* Prevent scrolling */
     }
     
-    /* Hide the virtue list container on mobile */
+    /* Compact header */
+    #dice-page h1, #problem-page h1 {
+        font-size: 1.8em;
+        margin: 5px 0;
+        padding: 5px 0;
+        flex: 0 0 auto;
+    }
+    
+    /* Hide virtue list on mobile to save space */
     #virtue-list-container {
         display: none;
     }
     
-    /* Bigger dice page header on mobile with reduced margin */
-    #dice-page h1 {
-        font-size: 1.5em;
-        margin-bottom: 2px; /* Further reduced */
-        margin-top: 0;
-        padding-top: 9px; /* Increased to 9px (added 4 pixels) */
-        width: 100%;
-        text-align: center;
-        flex: 0 0 auto;
-    }
-    
-    /* Make problem page header bigger too */
-    #problem-page h1 {
-        font-size: 1.5em;
-        margin-bottom: 2px; /* Further reduced */
-        margin-top: 0;
-        padding-top: 9px; /* Increased to 9px (added 4 pixels) */
-    }
-    
-    /* Structure layout with better proportions */
-    #dice-page {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    /* Position dice in the upper 60% area */
+    /* Dice positioning - fixed in the upper part */
     #dice-container {
-        flex: 3; /* Takes 60% of the available space between header and prompts */
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        position: absolute;
+        top: 25%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
         height: auto;
+        min-height: unset !important;
         margin: 0;
         padding: 0;
-        min-height: 30vh;
+        z-index: 80;
     }
     
-    /* Position result container properly */
+    /* Result positioning - fixed in the center part */
     #result-container {
-        flex: 2; /* Takes 40% of the available space between header and buttons */
-        background-color: transparent;
-        padding: 10px;
+        position: absolute;
+        top: 55%;
+        left: 10px;
+        right: 10px;
+        transform: translateY(-50%);
         margin: 0;
-        margin-bottom: 70px; /* Ensure space between results and fixed buttons */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-        z-index: 90;
-        min-height: 20vh;
-        max-height: 30vh;
-        overflow-y: auto;
+        padding: 15px;
+        height: auto;
+        min-height: unset !important;
+        max-height: unset !important;
+        z-index: 70;
+        background-color: #3a3a3a;
     }
     
-    /* Position buttons at bottom of page */
+    /* Ensure buttons stay at the bottom */
     #dice-buttons {
         position: fixed;
         bottom: 12px;
@@ -444,30 +445,27 @@ h1 {
         background-color: #292929;
         padding: 10px 0;
         margin: 0;
-        justify-content: space-between;
         z-index: 100;
     }
     
-    /* When result is shown, ensure proper spacing */
-    #dice-page:not(.compact-layout) #dice-container {
-        margin-bottom: 10px;
+    /* Ensure button row in problem page stays fixed too */
+    #button-row {
+        position: fixed;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        background-color: #292929;
+        padding: 10px 0;
+        margin: 0;
+        z-index: 100;
     }
     
-    /* Adjust button sizes */
+    /* Adjust button sizes and spacing */
     #roll-btn {
         padding: 10px 15px; 
         font-size: 16px;
-        /* Calculate width: 100% - (2 * square button width + 2 * 5px gap) */
-        width: calc(100% - 96px); /* 38px * 2 + 5px * 4 = 96px */
-        /* Center the button between the square buttons with 5px gaps */
+        width: calc(100% - 96px);
         margin: 0 5px;
-    }
-    
-    /* Make problem items adjust better to smaller screens */
-    .problem-item {
-        min-height: 58px; /* Slightly reduced */
-        font-size: 14px;
-        padding: 4px 3px; /* Further reduced */
     }
     
     /* Adjust done button for mobile */
@@ -476,17 +474,18 @@ h1 {
         padding: 10px 25px;
     }
     
-    /* Position buttons at bottom for problem page too */
-    #button-row {
-        position: fixed;
-        bottom: 12px;
-        left: 12px;
-        right: 12px;
-        background-color: #292929;
-        padding: 5px 0;
-        margin: 0;
-        justify-content: space-between;
-        z-index: 100;
+    /* Make square buttons actually square on mobile */
+    .square-btn {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+    }
+    
+    /* Fix problem page buttons */
+    #back-btn, #help-btn, #problem-help-btn, #refresh-btn-problem {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
     }
     
     /* Adjust dice size */
@@ -509,29 +508,27 @@ h1 {
     .face-5 { transform: rotateX(90deg) translateZ(60px); }
     .face-6 { transform: rotateX(-90deg) translateZ(60px); }
     
-    /* Make square buttons actually square on mobile */
-    .square-btn {
-        width: 38px !important;
-        height: 38px !important;
-        padding: 0 !important;
-    }
-    
-    /* Fix problem page buttons */
-    #back-btn, #help-btn, #problem-help-btn, #refresh-btn-problem {
-        width: 38px !important;
-        height: 38px !important;
-        padding: 0 !important;
-    }
-    
-    /* For mobile, make the dice-hidden container maintain its position */
+    /* Ensure hidden dice container stays in the same position */
     .dice-hidden #dice-container {
-        min-height: 30vh; /* Match the non-hidden state */
-        opacity: 0.05; /* Almost invisible but maintains position */
+        position: absolute;
+        top: 25%;
+        transform: translateY(-50%);
+        left: 0;
+        right: 0;
+        height: auto;
+        min-height: unset !important;
+        opacity: 0.05;
     }
     
-    /* Add extra space at bottom of problem page to account for fixed buttons */
-    #problems-grid {
-        margin-bottom: 75px;
+    /* When in compact mode (no result showing), still maintain the layout */
+    .compact-layout #result-container {
+        position: absolute;
+        top: 55%;
+        left: 10px;
+        right: 10px;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
     }
     
     /* Ensure proper layer stacking */
@@ -544,113 +541,21 @@ h1 {
     }
 }
 
-/* Even smaller screens adjustments */
+/* Further adjustments for very small screens */
 @media screen and (max-width: 400px) {
-    /* No changes to virtue items for very small screens */
-    
-    #dice-page h1 {
-        font-size: 1.1em;
-    }
-    
-    #dice-container {
-        min-height: 25vh; /* Slightly less height on very small screens */
-    }
-    
-    #result-container {
-        min-height: 18vh;
-    }
-}
-
-/* Updates to add to style.css */
-
-/* Match dice page header font size to problem page header */
-#dice-page h1 {
-    font-size: 1.8em; /* Match problem page header */
-}
-
-/* Improve dice positioning on mobile */
-@media screen and (max-width: 600px) {
-    /* Match the font size between both headers */
     #dice-page h1, #problem-page h1 {
-        font-size: 1.8em; /* Increased from 1.5em to match desktop size */
+        font-size: 1.5em;
+        margin: 5px 0;
+        padding: 5px 0;
     }
     
-    /* Create a more consistent layout structure */
-    #dice-page {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
+    /* Adjust dice position to be higher on very small screens */
+    #dice-container, .dice-hidden #dice-container {
+        top: 30%;
     }
     
-    /* Ensure dice container has the same position when hidden and visible */
-    #dice-container {
-        position: absolute;
-        top: 30%; /* Position consistently at 30% from the top */
-        left: 0;
-        right: 0;
-        transform: translateY(-50%); /* Center the dice vertically within its position */
-        margin: 0;
-        padding: 0;
-        height: auto;
-        min-height: unset; /* Remove min-height to prevent positioning issues */
-        transition: opacity 0.5s;
-    }
-    
-    /* Keep the hidden dice in the exact same position */
-    .dice-hidden #dice-container {
-        position: absolute;
-        top: 30%; /* Same position as visible state */
-        left: 0;
-        right: 0;
-        transform: translateY(-50%);
-        height: auto;
-        min-height: unset;
-        opacity: 0.05;
-    }
-    
-    /* Position result container at a fixed position below the dice */
+    /* Adjust result container position */
     #result-container {
-        position: absolute;
-        top: 60%; /* Position below the dice */
-        left: 0;
-        right: 0;
-        padding: 15px;
-        margin: 0;
-        margin-bottom: 70px;
-        min-height: unset;
-        max-height: unset;
-    }
-    
-    /* When in compact mode (no result showing), still maintain the layout */
-    .compact-layout #result-container {
-        position: absolute;
         top: 60%;
-        left: 0;
-        right: 0;
-        height: 0;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-    }
-    
-    /* Ensure proper z-index for all elements */
-    #dice-container {
-        z-index: 80;
-    }
-    
-    #result-container {
-        z-index: 70;
-    }
-    
-    #dice-buttons {
-        z-index: 100;
-    }
-}
-
-/* Adjustments for very small screens */
-@media screen and (max-width: 400px) {
-    #dice-page h1, #problem-page h1 {
-        font-size: 1.6em; /* Still larger than before, but slightly reduced for very small screens */
     }
 }
