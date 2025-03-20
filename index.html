@@ -12,10 +12,9 @@
     <div class="container">
         <!-- Problem Page -->
         <div id="problem-page">
-            <h1>What are you going through?</h1>
+            <h1>What do you struggle with?</h1>
             <div id="button-container">
                 <button id="toggle-casual" class="btn">More Casual</button>
-                <button id="refresh-btn" class="btn square-btn" title="Refresh problems">↻</button>
             </div>
             <div id="problems-grid" class="grid">
                 <!-- Debug element to show if grid is empty -->
@@ -24,24 +23,26 @@
                 </div>
             </div>
             <div id="button-row">
+                <button id="refresh-btn-problem" class="btn square-btn" title="Refresh problems">↻</button>
                 <button id="done-btn" class="btn">Done</button>
+                <button id="problem-help-btn" class="btn square-btn" title="Help">?</button>
             </div>
         </div>
 
         <!-- Dice Page -->
         <div id="dice-page" style="display: none;">
-            <h1 id="top-virtues">These virtues might help:</h1>
+            <h1 id="top-virtues">Your virtue dice is ready</h1>
             <div id="virtue-list-container"></div>
             <div id="dice-container">
                 <div id="dice"></div>
             </div>
-            <button id="roll-btn" class="btn">Roll</button>
             <div id="result-container">
                 <h2 id="selected-virtue"></h2>
                 <p id="selected-prompt"></p>
             </div>
             <div id="dice-buttons">
-                <button id="back-btn" class="btn square-btn" title="Back to problems">←</button>
+                <button id="back-btn" class="btn square-btn" title="Back to problems">&lt;</button>
+                <button id="roll-btn" class="btn">Roll</button>
                 <button id="help-btn" class="btn square-btn" title="Help">?</button>
             </div>
         </div>

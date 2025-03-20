@@ -3,9 +3,9 @@ const data = {
   "virtues": {
     "honesty": { "name": "Honesty" },
     "authenticity": { "name": "Authenticity" },
-    "selfRespect": { "name": "Self-Respect" },
+    "selfRespect": { "name": "Self Respect" },
     "humility": { "name": "Humility" },
-    "selfCompassion": { "name": "Self-Compassion" },
+    "selfCompassion": { "name": "Self Compassion" },
     "compassion": { "name": "Compassion" },
     "perspective": { "name": "Perspective" },
     "acceptance": { "name": "Acceptance" },
@@ -25,13 +25,13 @@ const data = {
       "Own up to a mistake, big or small. A simple 'I was wrong' can be powerful.",
       "If asked something you don't know, say, 'I'm not sure, but I can find out.'",
       "Reflect on a potential blind spot. What part of life do you tend to avoid thinking about?",
-      "It's okay if you're not sure you're in the right head space. Take your time."
+      "Don't tell yourself you're not ok if you're not ok."
     ],
     "authenticity": [
-      "Share one true feeling or opinion with someone you trust today, even if it's a little uncomfortable.",
+      "Share a true opinion with someone you trust today, even if it's a little uncomfortable.",
       "Tell someone one thing you genuinely appreciate about them.",
       "Do something that makes you truly happy, even if you think it's weird.",
-      "It's okay if being yourself feels hard. Share one small, true thing."
+      "It's okay if being yourself feels hard. It's still worth it."
     ],
     "selfRespect": [
       "Say 'no' to one request that feels draining or unimportant.",
@@ -41,7 +41,6 @@ const data = {
       "Feeling overwhelmed by others' needs? It's okay to set a small boundary."
     ],
     "humility": [
-      "Give someone specific praise. 'I admire how you…' is a great start.",
       "Ask for help with one specific task, even if it's small.",
       "Approach a conversation with the mindset, 'I have something to learn here.'",
       "Instead of offering advice, ask 'What do you think is the best approach?'",
@@ -49,7 +48,7 @@ const data = {
       "It's okay to feel proud of your accomplishments. Acknowledge someone who helped you."
     ],
     "selfCompassion": [
-      "If you catch yourself being self-critical, say, 'I'm doing my best,' and mean it.",
+      "If you catch yourself being self-critical, say something positive about yourself instead.",
       "Name one thing you like about yourself. It can be anything.",
       "Forgive yourself for one specific thing you're holding onto.",
       "Do one small act of self-care like a short walk, a deep breath or even a cup of tea.",
@@ -96,7 +95,6 @@ const data = {
     "courage": [
       "Do one small thing that scares you a little. It could be tiny. And acknowledge your bravery afterwards.",
       "Say 'yes' to something you'd usually avoid out of fear or discomfort.",
-      "Reach out to someone you admire and briefly tell them why.",
       "Ask a question you've been hesitant to ask.",
       "Share a vulnerability with someone you trust, even if it's just a small worry.",
       "Imagine your future self. What one small step would they tell you to take?"
@@ -156,7 +154,7 @@ const data = {
   },
   "problems": {
     "futureUncertainty": {
-        "problem": "Future Uncertainty / I'm floating in life",
+        "problem": "Directionless / I'm floating in life",
         "virtueScores": {
             "courage": 3,
             "acceptance": 3,
@@ -180,7 +178,7 @@ const data = {
         }
     },
     "lackOfSelfWorth": {
-       "problem": "Lack of Self-Worth / I'm nobody",
+       "problem": "Self-Worth / I'm a nobody",
         "virtueScores": {
             "humility": 3,
             "authenticity": 3,
@@ -213,7 +211,7 @@ const data = {
   		}
 	},
 	"difficultySettingBoundaries": {
-  		"problem": "Difficulty Setting Boundaries / People pleasing",
+  		"problem": "Setting Boundaries / People pleasing",
   		"virtueScores": {
     		"selfRespect": 3,
     		"honesty": 3,
@@ -224,7 +222,7 @@ const data = {
   }
 },
 "emotionalReactivity": {
-  "problem": "Emotional Reactivity / Too emotional",
+  "problem": "Emotional Reactivity / I act without thinking",
   "virtueScores": {
     "patience": 3,
     "presence": 3,
@@ -235,7 +233,7 @@ const data = {
   }
 },
 "relationshipConflict": {
-  "problem": "Relationship Conflict / I fight with my friends or family",
+  "problem": "Relationship Conflict / I fight a lot",
   "virtueScores": {
     "compassion": 3,
     "honesty": 3,
@@ -268,7 +266,7 @@ const data = {
   }
 },
 "socialAnxiety": {
-  "problem": "Social Anxiety / Awkwardness",
+  "problem": "Social Anxiety / I'm awkward",
   "virtueScores": {
     "courage": 3,
     "authenticity": 3,
@@ -279,7 +277,7 @@ const data = {
   }
 },
 "comparison": {
-  "problem": "Comparison / Feeling bad about myself online",
+  "problem": "Comparison / I feeling bad about myself online",
   "virtueScores": {
     "gratitude": 3,
     "humility": 3,
@@ -290,7 +288,7 @@ const data = {
   }
 },
 "procrastination":  {
-  "problem": "Procrastination / Keep putting things off",
+  "problem": "Procrastination / I keep putting things off",
   "virtueScores": {
     "discipline": 3,
     "focus": 3,
@@ -301,7 +299,7 @@ const data = {
   }
 },
 "overwhelm":  {
-  "problem": "Overwhelm / Stressed out",
+  "problem": "Overwhelm / I'm stressed out",
   "virtueScores": {
     "focus": 3,
     "discipline": 3,
@@ -312,7 +310,7 @@ const data = {
   }
 },
 "unhealthyHabits": {
-  "problem": "Unhealthy Habits / I don't like healthy stuff",
+  "problem": "Unhealthy Habits / Bad habits",
   "virtueScores": {
     "discipline": 3,
     "honesty": 3,
@@ -324,7 +322,7 @@ const data = {
   }
 },
 "difficultyCommitting": {
-  "problem": "Difficulty Committing / Commitment issues",
+  "problem": "Committing / Commitment issues",
   "virtueScores": {
     "courage": 3,
     "honesty": 3,
@@ -335,7 +333,7 @@ const data = {
   }
 },
 "lackOfSelfCare":  {
-  "problem": "Lack of Self-Care / Burnout",
+  "problem": "Self-Care / Burnout",
   "virtueScores": {
     "selfCompassion": 3,
     "selfRespect": 3,
@@ -346,7 +344,7 @@ const data = {
   }
 },
 "difficultyAcceptingPraise": {
-  "problem": "Difficulty Accepting Praise / I don't like compliments",
+  "problem": "Accepting Praise / I don't like compliments",
   "virtueScores": {
     "humility": 3,
     "gratitude": 3,

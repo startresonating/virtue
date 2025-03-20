@@ -5,6 +5,11 @@ let topVirtues = [];
 let isRolling = false;
 let currentFace = 0;
 let lastPrompts = {}; // Track the last prompt shown for each virtue
+let lastVirtue = null; // Track the last virtue rolled
+let rollCounter = 0; // Count how many times the dice has been rolled
+let inactivityTimer = null; // Timer to reset roll counter after inactivity
+let lastMilestone = -1; // Track the last milestone reached
+let currentMilestoneMessage = "Your virtue dice is ready"; // Store the current milestone message
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,7 +43,12 @@ function renderProblemsFallback() {
     problemsGrid.innerHTML = '';
     
     const allProblems = Object.keys(data.problems);
-    let randomProblems = getRandomItems(allProblems, 16);
+    
+    // Determine if we're on mobile and should show fewer problems
+    const isMobile = window.innerWidth <= 600;
+    const numberOfProblems = isMobile ? 8 : 16;
+    
+    let randomProblems = getRandomItems(allProblems, numberOfProblems);
     
     randomProblems.forEach(problemKey => {
         const problem = data.problems[problemKey];
@@ -51,7 +61,17 @@ function renderProblemsFallback() {
         problemElement.style.border = '2px solid #666';
         
         problemElement.onclick = function() {
+            // Remove selected state from all problem items if clicking on a different one
+            if (!this.classList.contains('selected')) {
+                document.querySelectorAll('.problem-item').forEach(item => {
+                    if (item !== this && item.classList.contains('selected')) {
+                        item.classList.remove('selected');
+                    }
+                });
+            }
+            
             this.classList.toggle('selected');
+            
             if (this.classList.contains('selected')) {
                 if (!selectedProblems.includes(problemKey)) {
                     selectedProblems.push(problemKey);
@@ -88,8 +108,12 @@ function initProblemPage() {
     const allProblems = Object.keys(data.problems);
     console.log("Available problems:", allProblems.length);
     
-    let randomProblems = getRandomItems(allProblems, 16);
-    console.log("Selected random problems:", randomProblems);
+    // Determine if we're on mobile and should show fewer problems
+    const isMobile = window.innerWidth <= 600;
+    const numberOfProblems = isMobile ? 8 : 16;
+    
+    let randomProblems = getRandomItems(allProblems, numberOfProblems);
+    console.log(`Selected random problems: ${randomProblems.length} for ${isMobile ? 'mobile' : 'desktop'}`);
     
     problemsGrid.innerHTML = '';
     
@@ -116,15 +140,51 @@ function initProblemPage() {
     setTimeout(updateDoneButtonStyle, 100);
 }
 
-// Function to refresh the problems grid
+// Function to refresh the problems grid with different problems
 function refreshProblems() {
     // Clear selected problems
     selectedProblems = [];
     
-    // Re-initialize the problem page
-    initProblemPage();
+    // Get currently displayed problem keys
+    const currentProblemKeys = [];
+    document.querySelectorAll('.problem-item').forEach(el => {
+        currentProblemKeys.push(el.dataset.key);
+    });
     
-    console.log("Problems refreshed");
+    // Get all available problems except those currently displayed
+    const allProblems = Object.keys(data.problems);
+    const availableProblems = allProblems.filter(key => !currentProblemKeys.includes(key));
+    
+    // Determine if we're on mobile and should show fewer problems
+    const isMobile = window.innerWidth <= 600;
+    const numberOfProblems = isMobile ? 8 : 16;
+    
+    // If we don't have enough remaining problems, just reinitialize
+    if (availableProblems.length < numberOfProblems) {
+        initProblemPage();
+        return;
+    }
+    
+    // Select random problems from the available ones
+    const randomProblems = getRandomItems(availableProblems, numberOfProblems);
+    const problemsGrid = document.getElementById('problems-grid');
+    problemsGrid.innerHTML = '';
+    
+    randomProblems.forEach(problemKey => {
+        const problem = data.problems[problemKey];
+        const problemText = casualMode ? problem.problem.split(' / ')[1] : problem.problem.split(' / ')[0];
+        
+        const problemElement = document.createElement('div');
+        problemElement.className = 'problem-item';
+        problemElement.dataset.key = problemKey;
+        problemElement.textContent = problemText;
+        
+        problemElement.addEventListener('click', () => toggleProblemSelection(problemElement, problemKey));
+        
+        problemsGrid.appendChild(problemElement);
+    });
+    
+    console.log(`Problems refreshed with new set (${numberOfProblems} problems)`);
 }
 
 // Get random items from an array
@@ -135,8 +195,19 @@ function getRandomItems(array, count) {
 
 // Toggle selection of a problem
 function toggleProblemSelection(element, problemKey) {
+    // Remove selected state from all problem items if clicking on a different one
+    if (!element.classList.contains('selected')) {
+        document.querySelectorAll('.problem-item').forEach(item => {
+            if (item !== element && item.classList.contains('selected')) {
+                // Only remove the class, don't modify the selectedProblems array yet
+                item.classList.remove('selected');
+            }
+        });
+    }
+    
     element.classList.toggle('selected');
     
+    // Update the selectedProblems array
     if (element.classList.contains('selected')) {
         if (!selectedProblems.includes(problemKey)) {
             selectedProblems.push(problemKey);
@@ -229,8 +300,12 @@ function createDice() {
         diceElement.appendChild(face);
     });
     
-    // Update header to new simpler text
-    document.getElementById('top-virtues').textContent = "These virtues might help:";
+    // Reset milestone tracking
+    lastMilestone = -1;
+    currentMilestoneMessage = "Your virtue dice is ready";
+    
+    // Update header to initial dynamic text
+    updateDynamicHeader(0);
     
     // Create the virtue list display
     const virtueListContainer = document.getElementById('virtue-list-container');
@@ -247,6 +322,111 @@ function createDice() {
         virtueElement.dataset.virtueText = virtueName;
         virtueListContainer.appendChild(virtueElement);
     });
+    
+    // Reset the roll counter when creating a new dice
+    rollCounter = 0;
+    lastVirtue = null;
+}
+
+// Get dynamic header text based on roll count
+function getDynamicHeaderText(count) {
+    // Define messages for each milestone
+    const milestones = {
+        0: ["Your virtue dice is ready"],
+        1: ["This virtue should help", "This virtue should work", "This virtue might help", "This virtue might work"],
+        2: ["This one too", "And this one", "And this"],
+        3: ["Find one you like", "Find your favourite", "Find one that sounds good"],
+        5: ["Just keep rolling!"],
+        10: ["Surely it's this one", "It's this one, surely", "Found it!"],
+        11: ["Ok let's try again", "Okay…", "Let's try again!", "My bad"],
+        12: ["Just keep rolling"],
+        17: ["This one maybe?", "Why not this one?"],
+        18: [":(", "):", ";_;", "What's wrong with me"],
+        20: ["I know we'll find one", "I'll find you one!", "We'll find one together"],
+        22: ["Just keep rolling…"],
+        27: ["I hope you're enjoying this!"],
+        32: ["…"],
+        37: [], // Special case, handled separately
+        38: ["Sorry"],
+        39: ["I really am"],
+        40: ["I'm just not used to this…"],
+        42: ["You know…"],
+        44: ["Sucking…"],
+        49: ["Anyway how's life?"],
+        54: ["Yeah, same…"],
+        59: ["Just keep rolling!"],
+        69: ["What do you want me to say?"],
+        71: ["No, really"],
+        72: ["What do you want from me?"],
+        73: ["What did I do to deserve this?"],
+        78: ["It hurts"],
+        79: ["It hurts really bad"],
+        80: ["Ahhhggruuuuuu"],
+        83: ["And you're still doing it??"],
+        84: ["Why???"],
+        85: ["WHYYYYYYYYYYYY"],
+        87: ["…"],
+        100: ["That's.. 100 times now"],
+        101: ["That's actually impressive"],
+        102: ["But I feel so used"],
+        103: ["Like some sort of tool"],
+        104: ["Look who's talking I guess…"],
+        105: ["Yeah, that was the punchline"],
+        106: ["What did you expect?"],
+        107: ["A golden ticket?"],
+        108: ["Show's over folks!"],
+        109: ["I admire your Curiosity"],
+        110: ["Genuinely :)"],
+        111: ["Hope you enjoyed!"],
+        112: [""]
+    };
+    
+    // Find the closest milestone that's less than or equal to the count
+    let closestMilestone = 0;
+    for (const milestone in milestones) {
+        if (parseInt(milestone) <= count && parseInt(milestone) > closestMilestone) {
+            closestMilestone = parseInt(milestone);
+        }
+    }
+    
+    // Special case for milestone 0
+    if (count === 0) {
+        lastMilestone = 0;
+        currentMilestoneMessage = milestones[0][0];
+        return currentMilestoneMessage;
+    }
+    
+    // Only change the message when we reach a new milestone
+    if (closestMilestone !== lastMilestone) {
+        lastMilestone = closestMilestone;
+        
+        // Special case for milestone 37
+        if (closestMilestone === 37 && selectedProblems.length > 0) {
+            const randomProblemKey = selectedProblems[Math.floor(Math.random() * selectedProblems.length)];
+            const problem = data.problems[randomProblemKey];
+            const formalProblemText = problem.problem.split(' / ')[0];
+            currentMilestoneMessage = `For someone that struggles with '${formalProblemText}', you sure are picky aren't you?`;
+        } else {
+            // Get messages for this milestone
+            const messages = milestones[closestMilestone];
+            if (messages && messages.length > 0) {
+                currentMilestoneMessage = messages[Math.floor(Math.random() * messages.length)];
+            }
+        }
+    }
+    
+    return currentMilestoneMessage;
+}
+
+// Update the dynamic header based on roll count
+function updateDynamicHeader(count) {
+    // Check if mobile, if so, don't update the header with dynamic text
+    if (window.innerWidth <= 600) {
+        return;
+    }
+    
+    const headerText = getDynamicHeaderText(count);
+    document.getElementById('top-virtues').textContent = headerText;
 }
 
 // Define rotations for each face of the dice
@@ -259,10 +439,31 @@ const rotations = [
     { x: 90, y: 0, z: 0 }       // Face 6 (bottom) - FIXED: was -90
 ];
 
+// Start or reset the inactivity timer
+function resetInactivityTimer() {
+    // Clear any existing timer
+    if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+    }
+    
+    // Set a new timer for 3 minutes (180000 ms)
+    inactivityTimer = setTimeout(() => {
+        rollCounter = 0;
+        updateDynamicHeader(rollCounter);
+    }, 180000);
+}
+
 // Roll the dice and display result
 function rollDice() {
     if (isRolling) return;
     isRolling = true;
+    
+    // Reset inactivity timer
+    resetInactivityTimer();
+    
+    // Increment roll counter
+    rollCounter++;
+    if (rollCounter > 112) rollCounter = 112; // Cap at 112
     
     // Check if this is the first roll and show the dice if it is
     const dicePage = document.getElementById('dice-page');
@@ -290,8 +491,21 @@ function rollDiceAnimation() {
         resultContainer.style.opacity = '0';
     }
     
-    // Select a random face (0-5)
-    const randomFaceIndex = Math.floor(Math.random() * 6);
+    // Select a random face (0-5), but avoid the last virtue if possible
+    let possibleFaces = Array.from({length: 6}, (_, i) => i);
+    
+    if (lastVirtue !== null && topVirtues.length > 1) {
+        // Find the face that corresponds to the last virtue
+        const lastVirtueFace = possibleFaces.find(faceIndex => topVirtues[faceIndex] === lastVirtue);
+        
+        // Remove that face from the possible faces
+        if (lastVirtueFace !== undefined) {
+            possibleFaces = possibleFaces.filter(faceIndex => faceIndex !== lastVirtueFace);
+        }
+    }
+    
+    // Pick a random face from the remaining options
+    const randomFaceIndex = possibleFaces[Math.floor(Math.random() * possibleFaces.length)];
     currentFace = randomFaceIndex; // Store the current face for later
     const rotation = rotations[randomFaceIndex];
     
@@ -310,6 +524,11 @@ function rollDiceAnimation() {
     setTimeout(() => {
         // Get the virtue that corresponds to the face that is now showing
         const selectedVirtue = topVirtues[currentFace];
+        lastVirtue = selectedVirtue; // Store this virtue for next time
+        
+        // Update dynamic header after the dice has landed
+        updateDynamicHeader(rollCounter);
+        
         displayResult(selectedVirtue);
         isRolling = false;
     }, 2000);
@@ -411,8 +630,8 @@ function setupEventListeners() {
     // Toggle casual mode
     document.getElementById('toggle-casual').addEventListener('click', toggleCasualMode);
     
-    // Refresh problems
-    document.getElementById('refresh-btn').addEventListener('click', refreshProblems);
+    // Refresh problems from the button-row
+    document.getElementById('refresh-btn-problem').addEventListener('click', refreshProblems);
     
     // Done button
     document.getElementById('done-btn').addEventListener('click', switchToDicePage);
@@ -420,11 +639,12 @@ function setupEventListeners() {
     // Roll button
     document.getElementById('roll-btn').addEventListener('click', rollDice);
     
-    // Back button (formerly Redo button)
+    // Back button
     document.getElementById('back-btn').addEventListener('click', switchToProblemPage);
     
-    // Help button
+    // Help buttons on both pages
     document.getElementById('help-btn').addEventListener('click', showHelp);
+    document.getElementById('problem-help-btn').addEventListener('click', showHelp);
     
     // Keyboard shortcuts
     document.addEventListener('keydown', function(event) {

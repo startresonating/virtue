@@ -32,12 +32,12 @@ body {
 
 h1 {
     text-align: center;
-    margin-bottom: 30px;
-    padding-top: 10px; /* Added extra padding above the header */
+    margin-bottom: 26px;
+    padding-top: 6px; /* Reduced padding above the header */
 }
 
 .btn {
-    background-color: #e37b8e;
+    background-color: #d45b73; /* Updated darker cherry blossom color */
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -50,20 +50,20 @@ h1 {
 }
 
 .btn:hover {
-    background-color: #c16576;
+    background-color: #e37b8e; /* Lighter color on hover */
 }
 
-/* Square button styles */
+/* Square button styles - with !important to ensure they're always applied */
 .square-btn {
-    width: 40px;
-    height: 40px;
+    width: 41px !important;
+    height: 41px !important;
     border-radius: 5px;
-    padding: 0;
+    padding: 0 !important;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 18px;
-    font-weight: bold; /* Making square buttons bold, including back arrow */
+    font-weight: bold;
 }
 
 /* Problem Page */
@@ -127,24 +127,35 @@ h1 {
 }
 
 .problem-item.selected {
-    background-color: #e37b8e;
+    background-color: #d45b73; /* Updated darker cherry blossom color */
     color: #fff;
     border-color: #fff;
     font-weight: bold;
 }
 
+/* New button row layout for problem page */
 #button-row {
     display: flex;
-    justify-content: center; /* Center the Done button */
+    justify-content: center;
     align-items: center;
     margin: 20px 0;
     gap: 10px;
 }
 
+#refresh-btn-problem {
+    margin: 0;
+    width: 76px;
+}
+
 #done-btn {
     margin: 0;
     font-size: 18px;
-    padding: 12px 30px;
+    padding: 10px 38px;
+}
+
+#problem-help-btn {
+    margin: 0;
+    width: 76px;
 }
 
 /* Dice Page */
@@ -179,7 +190,7 @@ h1 {
     justify-content: center;
     font-weight: bold;
     font-size: 18px;
-    background-color: #e37b8e;
+    background-color: #d45b73; /* Updated darker cherry blossom color */
     color: #fff;
     text-align: center;
     padding: 10px;
@@ -192,13 +203,7 @@ h1 {
 .face-5 { transform: rotateX(90deg) translateZ(75px); }
 .face-6 { transform: rotateX(-90deg) translateZ(75px); }
 
-#roll-btn {
-    margin: 0 auto 30px;
-    font-size: 19px; /* Increased font size by 1 pixel */
-    padding: 13px 81px; /* Increased padding by 1 pixel all around */
-    font-weight: normal; /* Roll button not bold */
-}
-
+/* New bottom button layout */
 #dice-buttons {
     display: flex;
     justify-content: space-between;
@@ -206,8 +211,19 @@ h1 {
     margin: 20px 0;
 }
 
-#back-btn, #help-btn {
+#back-btn, #help-btn, #roll-btn {
     margin: 0;
+}
+
+#back-btn, #help-btn {
+    height: 41px;
+    width: 41px;
+}
+
+#roll-btn {
+    font-size: 19px;
+    padding: 10px 48px;
+    font-weight: normal;
 }
 
 /* Virtue list container styles */
@@ -248,13 +264,13 @@ h1 {
 }
 
 .virtue-item.active {
-    background-color: #3d3d3d; /* Changed to #3d3d3d as requested */
+    background-color: #333333; /* Darker highlight color */
     font-weight: bold;
 }
 
 /* Disabled Done button style */
 #done-btn.disabled {
-    background-color: #ff9eb1;
+    background-color: #e87a92;
     cursor: not-allowed;
 }
 
@@ -262,7 +278,7 @@ h1 {
     text-align: center;
     margin: 30px 0;
     padding: 20px;
-    background-color: #555;
+    background-color: #3a3a3a; /* Slightly brighter "darklight" color */
     border-radius: 8px;
     opacity: 1;
     transition: opacity 0.5s ease;
@@ -270,7 +286,7 @@ h1 {
 }
 
 #selected-virtue {
-    color: #e37b8e;
+    color: #d45b73; /* Updated darker cherry blossom color */
     margin-bottom: 15px;
 }
 
@@ -279,10 +295,6 @@ h1 {
     margin-bottom: 0;
     height: auto;
     min-height: 200px;
-}
-
-.compact-layout #roll-btn {
-    margin-bottom: 0;
 }
 
 .compact-layout #dice-buttons {
@@ -313,33 +325,50 @@ h1 {
 
 /* Mobile-Friendly Media Queries */
 @media screen and (max-width: 600px) {
-    /* Change grid from 4×4 to 2×8 */
+    /* Change grid from 4×4 to 2×4 for mobile */
     .grid {
         grid-template-columns: repeat(2, 1fr);
         min-height: auto;
     }
     
-    #loading-message {
-        grid-column: span 2; /* Change span to match the new grid */
-    }
-    
-    /* Container padding adjustments for mobile */
+    /* Remove container styling for mobile */
     .container {
-        padding: 20px 15px;
+        background-color: transparent;
+        box-shadow: none;
+        padding: 10px;
         min-height: auto;
+        max-width: 100%;
     }
     
-    /* Smaller dice page header */
+    /* Hide the virtue list container on mobile */
+    #virtue-list-container {
+        display: none;
+    }
+    
+    /* Bigger dice page header on mobile */
     #dice-page h1 {
-        font-size: 1.2em;
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* Make problem page header bigger too */
+    #problem-page h1 {
+        font-size: 1.5em;
         margin-bottom: 15px;
     }
     
-    /* Keep original virtue items styling */
+    /* Keep the result container but change background to match the page */
+    #result-container {
+        background-color: transparent;
+        padding: 10px;
+        margin: 15px 0;
+    }
     
     /* Adjust button sizes */
     #roll-btn {
-        padding: 10px 50px;
+        padding: 10px 30px;
         font-size: 16px;
     }
     
@@ -378,6 +407,483 @@ h1 {
     .face-4 { transform: rotateY(-90deg) translateZ(60px); }
     .face-5 { transform: rotateX(90deg) translateZ(60px); }
     .face-6 { transform: rotateX(-90deg) translateZ(60px); }
+    
+    /* Adjusted button row for mobile */
+    #dice-buttons {
+        justify-content: space-around;
+        margin-top: 30px;
+    }
+    
+    /* Make square buttons actually square on mobile */
+    .square-btn {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+    }
+    
+    /* Fix problem page buttons */
+    #back-btn, #help-btn, #problem-help-btn, #refresh-btn-problem {
+        width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+    }
+}
+
+/* Even smaller screens adjustments */
+@media screen and (max-width: 400px) {
+    /* No changes to virtue items for very small screens */
+    
+    #dice-page h1 {
+        font-size: 1.1em;
+    }
+}
+
+/* Add a specific selector for the problem page header */
+#problem-page h1 {
+    font-size: 1.8em;
+}
+
+/* Inside your existing media queries, add these rules */
+@media screen and (max-width: 600px) {
+    /* Make problem page header match dice page header */
+    #problem-page h1 {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #problem-page h1 {
+        font-size: 1.1em;
+    }
+}/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #292929;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background-color: #444;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    min-height: 700px; /* Extended container height to prevent layout shifts */
+}
+
+.compact-container {
+    min-height: auto !important; /* Override min-height when compact */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 26px;
+    padding-top: 6px; /* Reduced padding above the header */
+}
+
+.btn {
+    background-color: #d45b73; /* Updated darker cherry blossom color */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin: 10px 0;
+    display: block;
+}
+
+.btn:hover {
+    background-color: #e37b8e; /* Lighter color on hover */
+}
+
+/* Square button styles */
+.square-btn {
+    width: 41px;
+    height: 41px; /* Match height of Done/Roll buttons */
+    border-radius: 5px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Problem Page */
+#button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+#toggle-casual {
+    margin: 0;
+}
+
+#refresh-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 30px;
+    min-height: 400px;
+}
+
+#loading-message {
+    grid-column: span 4;
+    text-align: center;
+    padding: 20px;
+}
+
+.problem-item {
+    background-color: #555;
+    padding: 15px 10px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #666;
+    position: relative;
+    z-index: 1;
+    overflow: visible;
+    color: #fff;
+}
+
+.problem-item:hover {
+    background-color: #666;
+}
+
+.problem-item.selected {
+    background-color: #d45b73; /* Updated darker cherry blossom color */
+    color: #fff;
+    border-color: #fff;
+    font-weight: bold;
+}
+
+/* New button row layout for problem page */
+#button-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+#refresh-btn-problem {
+    margin: 0;
+    width: 76px;
+}
+
+#done-btn {
+    margin: 0;
+    font-size: 18px;
+    padding: 10px 38px;
+}
+
+#problem-help-btn {
+    margin: 0;
+    width: 76px;
+}
+
+/* Dice Page */
+#dice-page h1 {
+    font-size: 1.8em;
+}
+
+#dice-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 242px; /* Reduced height by 8px (4px top, 4px bottom) */
+    margin: 26px 0; /* Reduced margin by 4px top and bottom */
+    perspective: 1000px;
+}
+
+#dice {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    transform-style: preserve-3d;
+    transition: transform 2s;
+}
+
+.face {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border: 2px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    background-color: #d45b73; /* Updated darker cherry blossom color */
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+.face-1 { transform: translateZ(75px); }
+.face-2 { transform: rotateY(180deg) translateZ(75px); }
+.face-3 { transform: rotateY(90deg) translateZ(75px); }
+.face-4 { transform: rotateY(-90deg) translateZ(75px); }
+.face-5 { transform: rotateX(90deg) translateZ(75px); }
+.face-6 { transform: rotateX(-90deg) translateZ(75px); }
+
+/* New bottom button layout */
+#dice-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+#back-btn, #help-btn, #roll-btn {
+    margin: 0;
+}
+
+#back-btn, #help-btn {
+    height: 41px;
+    width: 41px;
+}
+
+#roll-btn {
+    font-size: 19px;
+    padding: 10px 48px;
+    font-weight: normal;
+}
+
+/* Virtue list container styles */
+#virtue-list-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0 20px;
+    flex-wrap: wrap;
+}
+
+.virtue-item {
+    background-color: #555;
+    padding: 10px 14px; /* Increased padding by 2px both horizontally and vertically */
+    border-radius: 5px;
+    margin: 5px;
+    font-size: 15px; /* Increased font size by 1 point */
+    transition: all 0.3s;
+    /* Prevent layout shifts when selected */
+    display: inline-block;
+    min-width: max-content;
+    text-align: center;
+    /* Reserve space for bold text to prevent layout shifts */
+    font-weight: normal;
+    /* Add a small invisible wrapper to ensure consistent width */
+    position: relative;
+}
+
+.virtue-item::before {
+    /* Create an invisible copy with bold text to reserve the space */
+    content: attr(data-virtue-text);
+    font-weight: bold;
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    user-select: none;
+    pointer-events: none;
+    display: block;
+}
+
+.virtue-item.active {
+    background-color: #333333; /* Darker highlight color */
+    font-weight: bold;
+}
+
+/* Disabled Done button style */
+#done-btn.disabled {
+    background-color: #e87a92;
+    cursor: not-allowed;
+}
+
+#result-container {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    background-color: #3a3a3a; /* Slightly brighter "darklight" color */
+    border-radius: 8px;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    min-height: 120px; /* Ensure space for prompt content */
+}
+
+#selected-virtue {
+    color: #d45b73; /* Updated darker cherry blossom color */
+    margin-bottom: 15px;
+}
+
+/* Compact Layout Styles - More aggressive */
+.compact-layout #dice-container {
+    margin-bottom: 0;
+    height: auto;
+    min-height: 200px;
+}
+
+.compact-layout #dice-buttons {
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+
+/* When in compact mode, the result container should not take up space */
+.compact-layout #result-container {
+    margin: 0;
+    padding: 0;
+    height: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.dice-hidden #dice-container {
+    height: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.dice-hidden #dice {
+    transform: none !important;
+}
+
+/* Mobile-Friendly Media Queries */
+@media screen and (max-width: 600px) {
+    /* Change grid from 4×4 to 2×4 for mobile */
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        min-height: auto;
+    }
+    
+    /* Remove container styling for mobile */
+    .container {
+        background-color: transparent;
+        box-shadow: none;
+        padding: 10px;
+        min-height: auto;
+        max-width: 100%;
+    }
+    
+    /* Hide the virtue list container on mobile */
+    #virtue-list-container {
+        display: none;
+    }
+    
+    /* Bigger dice page header on mobile */
+    #dice-page h1 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* Make problem page header bigger too */
+    #problem-page h1 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+    
+    /* Keep the result container but change background to match the page */
+    #result-container {
+        background-color: transparent;
+        padding: 10px;
+        margin: 15px 0;
+    }
+    
+    /* Adjust button sizes */
+    #roll-btn {
+        padding: 10px 30px;
+        font-size: 16px;
+    }
+    
+    /* Make problem items adjust better to smaller screens */
+    .problem-item {
+        min-height: 70px;
+        font-size: 14px;
+        padding: 8px 6px;
+    }
+    
+    /* Adjust done button for mobile */
+    #done-btn {
+        font-size: 16px;
+        padding: 10px 25px;
+    }
+    
+    /* Make dice container and dice smaller on mobile */
+    #dice-container {
+        height: 200px;
+    }
+    
+    #dice {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .face {
+        width: 120px;
+        height: 120px;
+        font-size: 16px;
+    }
+    
+    .face-1 { transform: translateZ(60px); }
+    .face-2 { transform: rotateY(180deg) translateZ(60px); }
+    .face-3 { transform: rotateY(90deg) translateZ(60px); }
+    .face-4 { transform: rotateY(-90deg) translateZ(60px); }
+    .face-5 { transform: rotateX(90deg) translateZ(60px); }
+    .face-6 { transform: rotateX(-90deg) translateZ(60px); }
+    
+    /* Adjusted button row for mobile */
+    #dice-buttons {
+        justify-content: space-around;
+        margin-top: 30px;
+    }
+    
+    /* Make square buttons actually square on mobile */
+    .square-btn {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+    }
+    
+    /* Fix problem page buttons */
+    #problem-help-btn, #refresh-btn-problem {
+        width: 38px;
+        height: 38px;
+    }
 }
 
 /* Even smaller screens adjustments */
