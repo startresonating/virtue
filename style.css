@@ -422,7 +422,7 @@ h1 {
     #dice-page h1, #problem-page h1 {
         font-size: 1.8em;
         margin: 5px 0;
-        padding: 9px 0 5px 0; /* Added 4 more pixels of top padding */
+        padding: 15px 0 5px 0; /* Increased from 9px to 15px (+6px) to add more space above */
         flex: 0 0 auto;
     }
     
@@ -565,7 +565,7 @@ h1 {
     #dice-page h1, #problem-page h1 {
         font-size: 1.5em;
         margin: 5px 0;
-        padding: 9px 0 5px 0; /* Match the added padding from larger screens */
+        padding: 15px 0 5px 0; /* Match the padding from larger screens */
     }
     
     /* Adjust dice position on very small screens */
