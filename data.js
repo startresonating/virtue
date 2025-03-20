@@ -60,12 +60,12 @@ const data = {
       "Offer help before being asked. Look for opportunities.",
       "Celebrate someone else's win as if it were your own.",
       "Catch yourself gossiping? Turn it around with a genuine compliment to or about someone.",
-      "Recognize when you have been hard on yourself, and consider how you'd advise a friend in the same situation."
+      "Recognize when you've been hard on yourself, and consider how you'd advise a friend in the same situation."
     ],
     "perspective": [
       "During a conversation, ask a clarifying question like 'What do you mean by that?'",
-      "Before reacting to an opinion you disagree with, try saying, 'Help me understand your perspective.'",
-      "Consider a problem from the viewpoint of someone you respect, even if you disagree with them.",
+      "Before disagreeing with someone, try saying, 'Help me understand your perspective.'",
+      "Consider a problem from the viewpoint of someone you respect, even if you disagree.",
       "Spend 5 minutes reading or listening to a viewpoint opposite to your own.",
       "Imagine your future self. What one piece of advice would they give you now?",
       "Challenge one assumption you hold. Ask yourself, 'Is this really always true?'"
@@ -276,7 +276,7 @@ const data = {
   }
 },
 "comparison": {
-  "problem": "Comparison / I feeling bad about myself online",
+  "problem": "Comparison / I feel bad online",
   "virtueScores": {
     "gratitude": 3,
     "humility": 3,

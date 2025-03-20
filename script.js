@@ -144,26 +144,54 @@ function refreshProblems() {
     
     // Get all available problems except those currently displayed
     const allProblems = Object.keys(data.problems);
-    let availableProblems = allProblems.filter(key => !currentProblemKeys.includes(key));
+    const availableProblems = allProblems.filter(key => !currentProblemKeys.includes(key));
     
     // Determine if we're on mobile and should show fewer problems
     const isMobile = window.innerWidth <= 600;
     const numberOfProblems = isMobile ? 8 : 16;
     
-    // If we don't have enough remaining problems, mix in some current ones
-    if (availableProblems.length < numberOfProblems) {
-        // Mix in some of the current problems if needed
-        const neededExtraProblems = numberOfProblems - availableProblems.length;
-        const mixedInProblems = getRandomItems(currentProblemKeys, neededExtraProblems);
-        availableProblems = [...availableProblems, ...mixedInProblems];
+    // Check if we have enough new problems available
+    if (availableProblems.length >= numberOfProblems) {
+        // Great! We have enough new problems
+        const randomProblems = getRandomItems(availableProblems, numberOfProblems);
+        updateProblemsGrid(randomProblems);
+        console.log(`Refreshed with ${numberOfProblems} completely new problems`);
+    } else if (availableProblems.length > 0) {
+        // Not enough for a full set, but let's use what we have and add some others
+        // First, get all the available problems
+        const newProblemsToShow = [...availableProblems];
+        
+        // Fill the rest from problems not currently in the new set or current display
+        const remainingProblems = allProblems.filter(key => 
+            !newProblemsToShow.includes(key) && !currentProblemKeys.includes(key));
+        
+        // If we still need more, use some we haven't seen in a while
+        const neededMore = numberOfProblems - newProblemsToShow.length;
+        
+        if (remainingProblems.length + newProblemsToShow.length >= numberOfProblems) {
+            // Add more from remaining
+            const additionalProblems = getRandomItems(remainingProblems, neededMore);
+            const finalProblems = [...newProblemsToShow, ...additionalProblems];
+            updateProblemsGrid(finalProblems);
+            console.log(`Refreshed with ${newProblemsToShow.length} new problems and ${additionalProblems.length} other problems`);
+        } else {
+            // Just initialize a fresh set since we've seen most problems
+            initProblemPage();
+            console.log("Refreshed with completely new set");
+        }
+    } else {
+        // We've seen everything - reinitialize
+        initProblemPage();
+        console.log("Refreshed with completely new set");
     }
-    
-    // Select random problems from the available ones
-    const randomProblems = getRandomItems(availableProblems, numberOfProblems);
+}
+
+// Helper function to update the problems grid with the given problem keys
+function updateProblemsGrid(problemKeys) {
     const problemsGrid = document.getElementById('problems-grid');
     problemsGrid.innerHTML = '';
     
-    randomProblems.forEach(problemKey => {
+    problemKeys.forEach(problemKey => {
         const problem = data.problems[problemKey];
         const problemText = casualMode ? problem.problem.split(' / ')[1] : problem.problem.split(' / ')[0];
         
@@ -176,8 +204,6 @@ function refreshProblems() {
         
         problemsGrid.appendChild(problemElement);
     });
-    
-    console.log(`Problems refreshed with new set (${numberOfProblems} problems)`);
 }
 
 // Get random items from an array
@@ -216,7 +242,7 @@ function updateDoneButtonStyle() {
 
 // Show help message
 function showHelp() {
-    alert("The Virtue Game helps you through whatever you're going through by calculating relevant virtue guided action. \n\nKeep rolling the dice to get new ideas!");
+    alert("The Virtue Game helps you with whatever you're going through by calculating relevant virtue guided action. \n\nKeep rolling the dice to get new ideas!");
 }
 
 // Calculate virtue scores based on selected problems
@@ -322,9 +348,9 @@ function getDynamicHeaderText(count) {
         3: ["Find one you like", "Find your favourite", "Find one that sounds good"],
         5: ["Just keep rolling!"],
         10: ["Surely it's this one", "It's this one, surely", "Found it!"],
-        11: ["Ok let's try again", "Okay…", "Let's try again!", "My bad"],
+        11: ["Ok let's try again", "Okay…", "Let's try again!", "My bad..."],
         12: ["Just keep rolling"],
-        17: ["This one maybe?", "Why not this one?"],
+        17: ["This one maybe?", "How about this one?"],
         18: [":(", "):", ";_;", "What's wrong with me"],
         20: ["I know we'll find one", "I'll find you one!", "We'll find one together"],
         22: ["Just keep rolling…"],
@@ -342,9 +368,9 @@ function getDynamicHeaderText(count) {
         69: ["What do you want me to say?"],
         71: ["No, really"],
         72: ["What do you want from me?"],
-        73: ["What did I do to deserve this?"],
-        78: ["It hurts"],
-        79: ["It hurts really bad"],
+        73: ["What did I do to deserve this."],
+        78: ["It hurts."],
+        79: ["It hurts really bad."],
         80: ["Ahhhggruuuuuu"],
         83: ["And you're still doing it??"],
         84: ["Why???"],
@@ -359,10 +385,11 @@ function getDynamicHeaderText(count) {
         106: ["What did you expect?"],
         107: ["A golden ticket?"],
         108: ["Show's over folks!"],
-        109: ["I admire your Curiosity"],
-        110: ["Genuinely :)"],
-        111: ["Hope you enjoyed!"],
-        112: [""]
+        109: ["You Win!"],
+        110: ["I admire your Curiosity"],
+        111: ["Genuinely"],
+        112: ["Hope you Enjoyed!"],
+	113: [""]
     };
     
     // Find the closest milestone that's less than or equal to the count
@@ -390,7 +417,7 @@ function getDynamicHeaderText(count) {
             const randomProblemKey = selectedProblems[Math.floor(Math.random() * selectedProblems.length)];
             const problem = data.problems[randomProblemKey];
             const formalProblemText = problem.problem.split(' / ')[0];
-            currentMilestoneMessage = `For someone that struggles with ${formalProblemText}, you sure are picky aren't you?`;
+            currentMilestoneMessage = `For someone that struggles with '${formalProblemText}', you sure are picky aren't you?`;
         } else {
             // Get messages for this milestone
             const messages = milestones[closestMilestone];
@@ -405,11 +432,7 @@ function getDynamicHeaderText(count) {
 
 // Update the dynamic header based on roll count
 function updateDynamicHeader(count) {
-    // Check if mobile, if so, don't update the header with dynamic text
-    if (window.innerWidth <= 600) {
-        return;
-    }
-    
+    // Get the header text regardless of mobile or desktop
     const headerText = getDynamicHeaderText(count);
     document.getElementById('top-virtues').textContent = headerText;
 }
@@ -448,7 +471,7 @@ function rollDice() {
     
     // Increment roll counter
     rollCounter++;
-    if (rollCounter > 112) rollCounter = 112; // Cap at 112
+    if (rollCounter > 113) rollCounter = 113; // Cap at 113
     
     // Check if this is the first roll and show the dice if it is
     const dicePage = document.getElementById('dice-page');
