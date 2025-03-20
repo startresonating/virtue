@@ -386,18 +386,25 @@ h1 {
     #dice-page[style*="display: block"] {
         display: flex !important;
         flex-direction: column;
-        height: 100% !important;
-        min-height: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
         max-height: 100vh !important;
         position: relative;
-        overflow: hidden; /* Prevent scrolling */
+        overflow: hidden;
+    }
+    
+    /* Ensure proper initial state when page first loads */
+    .dice-hidden.compact-layout {
+        display: flex !important;
+        flex-direction: column;
+        height: 100vh !important;
     }
     
     /* Compact header */
     #dice-page h1, #problem-page h1 {
         font-size: 1.8em;
         margin: 5px 0;
-        padding: 5px 0;
+        padding: 9px 0 5px 0; /* Added 4 more pixels of top padding */
         flex: 0 0 auto;
     }
     
@@ -420,18 +427,20 @@ h1 {
         z-index: 80;
     }
     
-    /* Result positioning - fixed in the center part */
+    /* Result positioning - fixed above buttons */
     #result-container {
         position: absolute;
-        top: 55%;
+        top: auto; /* Remove top positioning */
+        bottom: 80px; /* Position from bottom with space for buttons */
         left: 10px;
         right: 10px;
-        transform: translateY(-50%);
+        transform: none; /* Remove transform */
         margin: 0;
         padding: 15px;
         height: auto;
         min-height: unset !important;
-        max-height: unset !important;
+        max-height: 40vh; /* Limit height */
+        overflow-y: auto; /* Allow scrolling if needed */
         z-index: 70;
         background-color: #3a3a3a;
     }
@@ -446,6 +455,7 @@ h1 {
         padding: 10px 0;
         margin: 0;
         z-index: 100;
+        border-top: 1px solid #444; /* Add separator line for visual clarity */
     }
     
     /* Ensure button row in problem page stays fixed too */
@@ -520,15 +530,29 @@ h1 {
         opacity: 0.05;
     }
     
+    /* Fix initial page layout - ensure dice page has proper structure even when hidden */
+    #dice-page {
+        position: relative;
+        min-height: 100vh;
+    }
+    
+    /* When in compact layout, position elements correctly from start */
+    .compact-layout#dice-page {
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+    
     /* When in compact mode (no result showing), still maintain the layout */
     .compact-layout #result-container {
         position: absolute;
-        top: 55%;
+        bottom: 80px;
         left: 10px;
         right: 10px;
         height: 0;
         padding: 0;
         overflow: hidden;
+        display: none; /* Fully hide instead of just making height 0 */
     }
     
     /* Ensure proper layer stacking */
@@ -546,7 +570,7 @@ h1 {
     #dice-page h1, #problem-page h1 {
         font-size: 1.5em;
         margin: 5px 0;
-        padding: 5px 0;
+        padding: 9px 0 5px 0; /* Match the added padding from larger screens */
     }
     
     /* Adjust dice position to be higher on very small screens */
@@ -554,8 +578,9 @@ h1 {
         top: 30%;
     }
     
-    /* Adjust result container position */
+    /* Result container is now positioned from bottom, no need to adjust */
     #result-container {
-        top: 60%;
+        bottom: 70px; /* Slightly less space on very small screens */
+        max-height: 35vh; /* Slightly smaller on very small screens */
     }
 }
