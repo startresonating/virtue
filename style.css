@@ -23,21 +23,23 @@ body {
     max-width: 800px;
     width: 100%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    min-height: auto; /* Changed from fixed height to auto */
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
 }
 
 .compact-container {
-    min-height: auto !important; /* Override min-height when compact */
+    min-height: auto !important;
 }
 
 h1 {
     text-align: center;
     margin-bottom: 26px;
-    padding-top: 10px; /* Increased from 6px to 10px (added 4 pixels) */
+    padding-top: 10px;
 }
 
 .btn {
-    background-color: #d45b73; /* Updated darker cherry blossom color */
+    background-color: #d45b73;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -50,7 +52,7 @@ h1 {
 }
 
 .btn:hover {
-    background-color: #e37b8e; /* Lighter color on hover */
+    background-color: #e37b8e;
 }
 
 /* Square button styles - with !important to ensure they're always applied */
@@ -69,26 +71,27 @@ h1 {
 /* Properly hide and separate pages */
 #problem-page {
     position: relative;
-    z-index: 200; /* Higher than dice page */
-    background-color: #292929; /* Match body background */
-    min-height: 100vh;
+    z-index: 200;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
 }
 
 #dice-page {
-    display: none; /* Ensure it's completely hidden initially */
-    position: fixed; /* Take it out of normal flow */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    display: none;
+    position: relative;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
     z-index: 100;
-    background-color: #292929; /* Match body background */
 }
 
 /* Ensure proper page separation in JavaScript display toggles */
 #dice-page[style*="display: block"] {
-    display: flex !important; /* Override inline style */
+    display: flex !important;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
 
 /* Problem Page */
@@ -96,8 +99,8 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 17px; /* Increased from 13px to 17px */
-    margin-bottom: 21px; /* Increased from 20px */
+    margin-top: 17px;
+    margin-bottom: 21px;
     gap: 10px;
 }
 
@@ -153,7 +156,7 @@ h1 {
 }
 
 .problem-item.selected {
-    background-color: #d45b73; /* Updated darker cherry blossom color */
+    background-color: #d45b73;
     color: #fff;
     border-color: #fff;
     font-weight: bold;
@@ -187,16 +190,18 @@ h1 {
 /* Dice Page */
 #dice-page h1 {
     font-size: 1.8em;
-    margin-bottom: 10px; /* Reduced margin */
+    margin-bottom: 10px;
 }
 
 #dice-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 242px; /* Reduced height by 8px (4px top, 4px bottom) */
-    margin: 26px 0; /* Reduced margin by 4px top and bottom */
+    height: 242px;
+    margin: 26px 0;
     perspective: 1000px;
+    position: relative;
+    z-index: 10;
 }
 
 #dice {
@@ -217,7 +222,7 @@ h1 {
     justify-content: center;
     font-weight: bold;
     font-size: 18px;
-    background-color: #d45b73; /* Updated darker cherry blossom color */
+    background-color: #d45b73;
     color: #fff;
     text-align: center;
     padding: 10px;
@@ -235,7 +240,9 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px 0 0 0; /* Eliminate bottom margin */
+    margin: 20px 0 0 0;
+    position: relative;
+    z-index: 20;
 }
 
 #back-btn, #help-btn {
@@ -249,36 +256,34 @@ h1 {
     font-size: 19px;
     padding: 10px 48px;
     font-weight: normal;
-    min-width: 180px; /* Make the roll button wider than the dice (150px) */
+    min-width: 180px;
 }
 
 /* Virtue list container styles */
 #virtue-list-container {
     display: flex;
     justify-content: space-around;
-    margin: 12px 0 17px; /* Adjusted from 10px 0 20px */
+    margin: 12px 0 17px;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
 }
 
 .virtue-item {
     background-color: #555;
-    padding: 10px 14px; /* Increased padding by 2px both horizontally and vertically */
+    padding: 10px 14px;
     border-radius: 5px;
     margin: 5px;
-    font-size: 15px; /* Increased font size by 1 point */
+    font-size: 15px;
     transition: all 0.3s;
-    /* Prevent layout shifts when selected */
     display: inline-block;
     min-width: max-content;
     text-align: center;
-    /* Reserve space for bold text to prevent layout shifts */
     font-weight: normal;
-    /* Add a small invisible wrapper to ensure consistent width */
     position: relative;
 }
 
 .virtue-item::before {
-    /* Create an invisible copy with bold text to reserve the space */
     content: attr(data-virtue-text);
     font-weight: bold;
     height: 0;
@@ -290,7 +295,7 @@ h1 {
 }
 
 .virtue-item.active {
-    background-color: #333333; /* Darker highlight color */
+    background-color: #333333;
     font-weight: bold;
 }
 
@@ -304,23 +309,25 @@ h1 {
     text-align: center;
     margin: 30px 0;
     padding: 20px;
-    background-color: #3a3a3a; /* Slightly brighter "darklight" color */
+    background-color: #3a3a3a;
     border-radius: 8px;
     opacity: 1;
     transition: opacity 0.5s ease;
-    min-height: 120px; /* Ensure space for prompt content */
+    min-height: 120px;
+    position: relative;
+    z-index: 10;
 }
 
 #selected-virtue {
-    color: #d45b73; /* Updated darker cherry blossom color */
+    color: #d45b73;
     margin-bottom: 15px;
 }
 
 /* Add a specific selector for the problem page header */
 #problem-page h1 {
     font-size: 1.8em;
-    margin-bottom: 10px; /* Reduced margin */
-    padding-top: 10px; /* Increased from 6px to 10px (added 4 pixels) */
+    margin-bottom: 10px;
+    padding-top: 10px;
 }
 
 /* Compact Layout Styles - More aggressive */
@@ -337,21 +344,21 @@ h1 {
 
 /* When in compact mode (no result showing), hide result container properly */
 .compact-layout #result-container {
-    display: none; /* Completely hide it */
+    display: none;
 }
 
 /* Make dice initially roll in place instead of appearing/disappearing */
 .dice-hidden #dice-container {
-    height: auto; /* Changed from 0 to auto to maintain its position */
-    min-height: 200px; /* Give it a minimum height to match where it will be */
-    margin: 26px 0; /* Keep the margin */
-    opacity: 0.1; /* Almost invisible but maintains position */
-    transition: opacity 0.5s; /* Smooth transition for opacity */
+    height: auto;
+    min-height: 200px;
+    margin: 26px 0;
+    opacity: 0.1;
+    transition: opacity 0.5s;
 }
 
 .dice-hidden #dice {
     transform: none !important;
-    opacity: 0.05; /* Almost invisible */
+    opacity: 0.05;
 }
 
 /* Mobile-Friendly Media Queries */
@@ -404,12 +411,21 @@ h1 {
     }
     
     /* Dice page structure for mobile */
+    #dice-page {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #292929 !important;
+    }
+    
     #dice-page[style*="display: block"] {
         display: flex !important;
         flex-direction: column;
         height: 100vh !important;
         max-height: 100vh !important;
-        position: fixed; /* Keep it fixed to prevent scrolling issues */
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
@@ -422,7 +438,7 @@ h1 {
     #dice-page h1, #problem-page h1 {
         font-size: 1.8em;
         margin: 5px 0;
-        padding: 20px 0 5px 0; /* Increased from 15px to 20px (+5px) to add even more space above */
+        padding: 20px 0 5px 0;
         flex: 0 0 auto;
     }
     
@@ -462,17 +478,17 @@ h1 {
     /* Result positioning - moved up between dice and buttons */
     #result-container {
         position: absolute;
-        top: 60%; /* Position it closer to the dice */
-        bottom: auto; /* Remove bottom positioning */
+        top: 60%;
+        bottom: auto;
         left: 10px;
         right: 10px;
-        transform: translateY(-50%); /* Center it vertically */
+        transform: translateY(-50%);
         margin: 0;
         padding: 15px;
         height: auto;
         min-height: unset !important;
-        max-height: 35vh; /* Limit height */
-        overflow-y: auto; /* Allow scrolling if needed */
+        max-height: 35vh;
+        overflow-y: auto;
         z-index: 70;
         background-color: #3a3a3a;
     }
@@ -487,7 +503,7 @@ h1 {
         padding: 10px 0;
         margin: 0;
         z-index: 100;
-        border-top: 1px solid #444; /* Add separator line for visual clarity */
+        border-top: 1px solid #444;
     }
     
     /* Ensure button row in problem page stays fixed too */
@@ -565,7 +581,7 @@ h1 {
     #dice-page h1, #problem-page h1 {
         font-size: 1.5em;
         margin: 5px 0;
-        padding: 15px 0 5px 0; /* Match the padding from larger screens */
+        padding: 15px 0 5px 0;
     }
     
     /* Adjust dice position on very small screens */
@@ -575,6 +591,6 @@ h1 {
     
     /* Adjust result container position for very small screens */
     #result-container {
-        top: 58%; /* Slightly higher on very small screens */
+        top: 58%;
     }
 }
